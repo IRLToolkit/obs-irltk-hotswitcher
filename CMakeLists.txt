@@ -2,18 +2,18 @@ cmake_minimum_required(VERSION 3.10)
 
 # Change obs-plugintemplate to your plugin's name in a machine-readable format
 # (e.g.: obs-myawesomeplugin) and set 
-project(obs-plugintemplate VERSION 1.0.0)
+project(obs-irltk-hotswitcher VERSION 1.0.0)
 
 # Replace `Your Name Here` with the name (yours or your organization's) you want
 # to see as the author of the plugin (in the plugin's metadata itself and in the installers)
-set(PLUGIN_AUTHOR "Your Name Here")
+set(PLUGIN_AUTHOR "tt2468")
 
 # Replace `com.example.obs-plugin-template` with a unique Bundle ID for macOS releases
 # (used both in the installer and when submitting the installer for notarization)
-set(MACOS_BUNDLEID "com.example.obs-plugintemplate")
+set(MACOS_BUNDLEID "com.obsplugin.obs-irltk-hotswitcher")
 
 # Replace `me@contoso.com` with the maintainer email address you want to put in Linux packages
-set(LINUX_MAINTAINER_EMAIL "me@contoso.com")
+set(LINUX_MAINTAINER_EMAIL "tt2468@irltoolkit.com")
 
 # TAKE NOTE: No need to edit things past this point
 
@@ -23,7 +23,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 # In case you need C++
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (WIN32 OR APPLE)
@@ -56,9 +56,14 @@ configure_file(
 )
 
 set(PLUGIN_SOURCES
-	src/plugin-main.c)
+	src/plugin-main.cpp
+	src/Config.cpp
+	src/forms/settings-dialog.cpp)
 
 set(PLUGIN_HEADERS
+	src/plugin-main.h
+	src/Config.h
+	src/forms/settings-dialog.h
 	src/plugin-macros.generated.h)
 
 # --- Platform-independent build settings ---
