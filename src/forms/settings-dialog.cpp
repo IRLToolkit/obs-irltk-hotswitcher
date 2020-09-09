@@ -78,14 +78,15 @@ SettingsDialog::~SettingsDialog() {
 
 void SettingsDialog::RefreshStatus() {
     auto conf = GetConfig();
-    //auto reply = getHttpPtr()->get(QString("https://api.irl.run/v1/server/status"));
-    auto reply = getHttpPtr()->get(QString("http://www.google.com"));
+    auto reply = getHttpPtr()->get(QString("https://api.irl.run/v1/server/status"));
     connect(reply, &HttpReply::finished, this, [this](auto &reply) {
         if (reply.isSuccessful()) {
-            //obs_data_t *statusData = obs_data_create_from_json(reply.body().toStdString().c_str());
-            //SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(statusData, "ready"));
-            //obs_data_release(statusData);
-            blog(LOG_INFO, "Code: %d | Phrase: %s", reply.statusCode(), reply.reasonPhrase().toStdString().c_str());
+            obs_data_t *statusData = obs_data_create_from_json(reply.body().toStdString().c_str());
+            SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(statusData, "ready"));
+            obs_data_release(statusData);
+#ifdef DEBUG_MODE
+            blog(LOG_INFO, "HTTP Code: %d | Phrase: %s", reply.statusCode(), reply.reasonPhrase().toStdString().c_str());
+#endif
         } else {
             if (reply.statusCode() == 401) {
                 QMessageBox msgBox;
