@@ -123,11 +123,11 @@ jobs:
       - name: 'Build obs-irltk-hotswitcher 32-bit'
         working-directory: ${{ github.workspace }}/obs-irltk-hotswitcher
         run: msbuild /m /p:Configuration=RelWithDebInfo .\build32\obs-irltk-hotswitcher.sln
-      - name: 'Set PR artifact filename'
+      - name: 'Set windows filename'
         shell: bash
         run: |
-          FILENAME="obs-irltk-hotswitcher-${{ env.GIT_HASH }}-Windows"
-          echo "::set-env name=FILENAME::$FILENAME"
+          FILENAME="obs-websocket-${{ env.GIT_TAG }}-Windows"
+          echo "::set-env name=WIN_FILENAME::$FILENAME"
       - name: 'Package obs-irltk-hotswitcher'
         working-directory: ${{ github.workspace }}/obs-irltk-hotswitcher
         run: |
