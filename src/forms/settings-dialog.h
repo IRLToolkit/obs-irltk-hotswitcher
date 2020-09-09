@@ -14,6 +14,7 @@ public:
 	void showEvent(QShowEvent* event);
 	void ToggleShowHide();
     void RefreshStatus();
+    void SetServerStatusIndicator(bool active=false);
 
 private Q_SLOTS:
 	void AuthCheckboxChanged();

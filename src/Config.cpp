@@ -7,6 +7,7 @@
 #define SECTION_NAME "IRLTKHotswitcher"
 #define PARAM_APIKEY "APIKey"
 
+#include "plugin-main.h"
 #include "Config.h"
 
 #define QT_TO_UTF8(str) str.toUtf8().constData()
@@ -33,7 +34,7 @@ void Config::Load()
 
 	APIKey = config_get_string(obsConfig, SECTION_NAME, PARAM_APIKEY);
 #ifdef DEBUG_MODE
-    blog(LOG_INFO, "API Key: %s", APIKey);
+    blog(LOG_INFO, "API Key: %s", APIKey.toStdString().c_str());
 #endif
 }
 

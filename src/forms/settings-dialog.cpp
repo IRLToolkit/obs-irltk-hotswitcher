@@ -5,6 +5,8 @@
 #include <QAbstractButton>
 #include <QMessageBox>
 #include <QRegExpValidator>
+#include <QIcon>
+#include <QPixmap>
 
 #include "../plugin-main.h"
 #include "../Config.h"
@@ -26,6 +28,7 @@ void SettingsDialog::showEvent(QShowEvent* event) {
 	auto conf = GetConfig();
 
 	ui->apiKey->setText(conf->APIKey);
+    SettingsDialog::SetServerStatusIndicator();
     SettingsDialog::RefreshStatus();
 }
 
@@ -76,9 +79,11 @@ SettingsDialog::~SettingsDialog() {
 void SettingsDialog::RefreshStatus() {
     auto conf = GetConfig();
     auto reply = getHttpPtr()->get(QString("https://api.irl.run/v1/server/status"));
-    connect(reply, &HttpReply::finished, this, [](auto &reply) {
+    connect(reply, &HttpReply::finished, this, [this](auto &reply) {
         if (reply.isSuccessful()) {
-            qDebug() << "Feel the bytes!" << reply.body();
+            obs_data_t *statusData = obs_data_create_from_json(reply.body().toStdString().c_str());
+            SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(statusData, "ready"));
+            obs_data_release(statusData);
         } else {
             if (reply.statusCode() == 401) {
                 QMessageBox msgBox;
@@ -96,4 +101,12 @@ void SettingsDialog::RefreshStatus() {
 #endif
         }
     });
+}
+
+void SettingsDialog::SetServerStatusIndicator(bool active) {
+    if (active) {
+        ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/checkmark"));
+    } else {
+        ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/times"));
+    }
 }

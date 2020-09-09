@@ -26,6 +26,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTORCC ON)
+
 if (WIN32 OR APPLE)
 include(external/FindLibObs.cmake)
 endif()
@@ -58,7 +60,8 @@ configure_file(
 set(PLUGIN_SOURCES
 	src/plugin-main.cpp
 	src/Config.cpp
-	src/forms/settings-dialog.cpp)
+	src/forms/settings-dialog.cpp
+        data/obs-irltk-hotswitcher.qrc)
 
 set(PLUGIN_HEADERS
 	src/plugin-main.h
@@ -84,7 +87,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 	http
 )
 
-
+qt5_add_resources(data/${CMAKE_PROJECT_NAME}.qrc)
 
 # --- End of section ---
 
@@ -185,11 +188,16 @@ if(UNIX AND NOT APPLE)
 
 	file(GLOB locale_files data/locale/*.ini)
 
+        file(GLOB image_files data/images/*.*)
+
 	install(TARGETS ${CMAKE_PROJECT_NAME}
 		LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/obs-plugins")
 
 	install(FILES ${locale_files}
 		DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/obs/obs-plugins/${CMAKE_PROJECT_NAME}/locale")
+
+	install(FILES ${image_files}
+		DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/obs/obs-plugins/${CMAKE_PROJECT_NAME}/images")
 endif()
 # --- End of section ---
 

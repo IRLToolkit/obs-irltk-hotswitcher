@@ -1,6 +1,7 @@
 #include <obs.hpp>
 #include <memory>
 #include "../lib/http/src/http.h"
+#include "plugin-macros.generated.h"
 
 #define DEBUG_MODE
 
