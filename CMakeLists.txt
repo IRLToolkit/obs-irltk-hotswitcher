@@ -75,11 +75,16 @@ include_directories(
 	${Qt5Widgets_INCLUDES}
 )
 
+add_subdirectory(lib/http)
+
 target_link_libraries(${CMAKE_PROJECT_NAME}
 	libobs
 	Qt5::Core
 	Qt5::Widgets
+	http
 )
+
+
 
 # --- End of section ---
 

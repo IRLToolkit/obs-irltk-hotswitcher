@@ -13,10 +13,12 @@ public:
 	~SettingsDialog();
 	void showEvent(QShowEvent* event);
 	void ToggleShowHide();
+    void RefreshStatus();
 
 private Q_SLOTS:
 	void AuthCheckboxChanged();
-	void FormAccepted();
+	void SaveSettings();
+    void DialogButtonClicked(QAbstractButton *button);
 
 private:
 	Ui::SettingsDialog* ui;

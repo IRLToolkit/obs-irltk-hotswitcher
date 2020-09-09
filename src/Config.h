@@ -5,6 +5,8 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
+#include "plugin-main.h"
+
 class Config {
 	public:
 		Config();

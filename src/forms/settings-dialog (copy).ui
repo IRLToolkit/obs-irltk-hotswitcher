@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>206</height>
+    <width>531</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -46,29 +46,13 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QPushButton" name="apiRefreshButton">
-       <property name="toolTip">
-        <string>IRLTKHotSwitcher.Panel.APIRefreshButtonTip</string>
-       </property>
+      <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>IRLTKHotSwitcher.Panel.APIRefreshButton</string>
+        <string>PushButton</string>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -92,17 +76,33 @@
  <connections>
   <connection>
    <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>SettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>265</x>
-     <y>433</y>
+     <x>316</x>
+     <y>300</y>
     </hint>
     <hint type="destinationlabel">
-     <x>265</x>
-     <y>227</y>
+     <x>286</x>
+     <y>314</y>
     </hint>
    </hints>
   </connection>

@@ -32,6 +32,9 @@ void Config::Load()
 	config_t* obsConfig = GetConfigStore();
 
 	APIKey = config_get_string(obsConfig, SECTION_NAME, PARAM_APIKEY);
+#ifdef DEBUG_MODE
+    blog(LOG_INFO, "API Key: %s", APIKey);
+#endif
 }
 
 void Config::Save()
