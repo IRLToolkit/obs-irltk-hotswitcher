@@ -33,7 +33,7 @@ include(external/FindLibObs.cmake)
 endif()
 
 find_package(LibObs REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Network)
 
 configure_file(
     src/plugin-macros.h.in
@@ -76,6 +76,7 @@ include_directories(
 	"${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api"
 	${Qt5Core_INCLUDES}
 	${Qt5Widgets_INCLUDES}
+	${Qt5Network_INCLUDES}
 	"${CMAKE_SOURCE_DIR}/lib/http"
 )
 
@@ -85,6 +86,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 	libobs
 	Qt5::Core
 	Qt5::Widgets
+	Qt5::Network
 	http
 )
 
