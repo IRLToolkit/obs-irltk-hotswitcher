@@ -1,4 +1,0 @@
-[submodule "lib/http"]
-	path = lib/http
-	url = https://github.com/flaviotordini/http
-	branch = master
