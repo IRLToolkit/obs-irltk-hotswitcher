@@ -108,7 +108,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../data/obs-irltk-hotswitcher.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

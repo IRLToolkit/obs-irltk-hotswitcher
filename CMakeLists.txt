@@ -52,7 +52,7 @@ set(PLUGIN_SOURCES
 	src/plugin-main.cpp
 	src/Config.cpp
 	src/forms/settings-dialog.cpp
-	data/obs-irltk-hotswitcher.qrc)
+	resources.qrc)
 
 set(PLUGIN_HEADERS
 	src/plugin-main.h
