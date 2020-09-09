@@ -76,6 +76,7 @@ include_directories(
 	"${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api"
 	${Qt5Core_INCLUDES}
 	${Qt5Widgets_INCLUDES}
+	${CMAKE_SOURCE_DIR}/lib/http
 )
 
 add_subdirectory(lib/http)
