@@ -123,6 +123,7 @@ if(WIN32)
 	# The "release" folder has a structure similar OBS' one on Windows
 	set(RELEASE_DIR "${PROJECT_SOURCE_DIR}/release")
 
+    add_compile_definitions(__PRETTY_FUNCTION__=__FUNCSIG__)
     add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         # If config is Release or RelWithDebInfo, package release files
         COMMAND if $<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>>==1 (
