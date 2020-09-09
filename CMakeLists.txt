@@ -176,9 +176,8 @@ if(WIN32)
         )
 		
 		COMMAND "${CMAKE_COMMAND}" -E copy
-			$<TARGET_FILE:Qt5::Network>
-			$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>
-		)
+			"${QTDIR}/bin/Qt5Network.dll"
+			"${CMAKE_BINARY_DIR}/$<CONFIG>"
     )
 	# --- End of sub-section ---
 
