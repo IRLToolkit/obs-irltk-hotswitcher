@@ -126,7 +126,7 @@ jobs:
       - name: 'Set windows filename'
         shell: bash
         run: |
-          FILENAME="obs-websocket-${{ env.GIT_TAG }}-Windows"
+          FILENAME="obs-irltk-hotswitcher-${{ env.GIT_HASH }}-Windows"
           echo "::set-env name=WIN_FILENAME::$FILENAME"
       - name: 'Package obs-irltk-hotswitcher'
         working-directory: ${{ github.workspace }}/obs-irltk-hotswitcher
