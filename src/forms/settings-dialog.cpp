@@ -85,7 +85,7 @@ void SettingsDialog::RefreshStatus() {
             //obs_data_t *statusData = obs_data_create_from_json(reply.body().toStdString().c_str());
             //SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(statusData, "ready"));
             //obs_data_release(statusData);
-            qDebug() << reply.body();
+            blog(LOG_INFO, "Code: %d | Phrase: %s", reply.statusCode(), reply.reasonPhrase().toStdString().c_str());
         } else {
             if (reply.statusCode() == 401) {
                 QMessageBox msgBox;
