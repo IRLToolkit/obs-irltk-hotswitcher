@@ -17,7 +17,6 @@ public:
     void SetServerStatusIndicator(bool active=false);
 
 private Q_SLOTS:
-	void AuthCheckboxChanged();
 	void SaveSettings();
     void DialogButtonClicked(QAbstractButton *button);
 
