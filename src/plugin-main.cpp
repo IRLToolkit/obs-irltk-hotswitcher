@@ -42,12 +42,12 @@ bool obs_module_load(void)
 #ifdef DEBUG_MODE
     blog(LOG_INFO, "Using agent: '%s'", userAgent.toStdString().c_str());
     blog(LOG_INFO, "Using authorization: '%s'", apiAuth.toStdString().c_str());
-    //blog(LOG_INFO, "QT SSL version: '%s'", QSslSocket::sslLibraryBuildVersionString().toStdString().c_str());
-    //if (QSslSocket::supportsSsl()) {
-    //    blog(LOG_INFO, "SSL is supported.");
-    //} else {
-    //    blog(LOG_ERROR, "SSL is not supported!");
-    //}
+    blog(LOG_INFO, "QT SSL version: '%s'", QSslSocket::sslLibraryBuildVersionString().toStdString().c_str());
+    if (QSslSocket::supportsSsl()) {
+        blog(LOG_INFO, "SSL is supported.");
+    } else {
+        blog(LOG_ERROR, "SSL is not supported!");
+    }
 #endif
     httpPtr->addRequestHeader("User-Agent", userAgent.toUtf8());
     httpPtr->addRequestHeader("Authorization", apiAuth.toUtf8());
