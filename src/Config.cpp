@@ -10,11 +10,8 @@
 #include "plugin-main.h"
 #include "Config.h"
 
-#define QT_TO_UTF8(str) str.toUtf8().constData()
-
 Config::Config() :
-	APIKey(""),
-	SettingsLoaded(false)
+	APIKey("")
 {
 	qsrand(QTime::currentTime().msec());
 
@@ -34,7 +31,7 @@ void Config::Load()
 
 	APIKey = config_get_string(obsConfig, SECTION_NAME, PARAM_APIKEY);
 #ifdef DEBUG_MODE
-    blog(LOG_INFO, "API Key: %s", APIKey.toStdString().c_str());
+	blog(LOG_INFO, "API Key: %s", APIKey.toStdString().c_str());
 #endif
 }
 

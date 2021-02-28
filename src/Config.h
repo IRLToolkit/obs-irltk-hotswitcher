@@ -16,9 +16,7 @@ class Config {
 		void SetDefaults();
 		config_t* GetConfigStore();
 
-        QString APIKey;
-
-		bool SettingsLoaded;
+		QString APIKey;
 
 	private:
 		static void OnFrontendEvent(enum obs_frontend_event event, void* param);

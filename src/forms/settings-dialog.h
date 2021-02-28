@@ -13,12 +13,12 @@ public:
 	~SettingsDialog();
 	void showEvent(QShowEvent* event);
 	void ToggleShowHide();
-    void RefreshStatus();
-    void SetServerStatusIndicator(bool active=false);
+	void RefreshStatus();
+	void SetServerStatusIndicator(bool active=false);
 
 private Q_SLOTS:
 	void SaveSettings();
-    void DialogButtonClicked(QAbstractButton *button);
+	void DialogButtonClicked(QAbstractButton *button);
 
 private:
 	Ui::SettingsDialog* ui;

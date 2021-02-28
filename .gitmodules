@@ -1,0 +1,6 @@
+[submodule "lib/json"]
+	path = lib/json
+	url = https://github.com/nlohmann/json.git
+[submodule "lib/http"]
+	path = lib/http
+	url = https://github.com/flaviotordini/http.git

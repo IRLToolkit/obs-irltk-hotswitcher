@@ -28,6 +28,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTORCC ON)
 
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+
 if (WIN32 OR APPLE)
 include(external/FindLibObs.cmake)
 endif()
@@ -60,12 +62,14 @@ configure_file(
 set(PLUGIN_SOURCES
 	src/plugin-main.cpp
 	src/Config.cpp
+    src/HttpManager.cpp
 	src/forms/settings-dialog.cpp
 	resources.qrc)
 
 set(PLUGIN_HEADERS
 	src/plugin-main.h
 	src/Config.h
+    src/HttpManager.h
 	src/forms/settings-dialog.h
 	src/plugin-macros.generated.h)
 
@@ -78,9 +82,11 @@ include_directories(
 	${Qt5Widgets_INCLUDES}
 	${Qt5Network_INCLUDES}
 	"${CMAKE_SOURCE_DIR}/lib/http"
+    "${CMAKE_SOURCE_DIR}/lib/json"
 )
 
 add_subdirectory(lib/http)
+add_subdirectory(lib/json)
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
 	libobs
@@ -88,6 +94,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 	Qt5::Widgets
 	Qt5::Network
 	http
+    nlohmann_json::nlohmann_json
 )
 
 # --- End of section ---

@@ -10,6 +10,7 @@
 
 #include "../plugin-main.h"
 #include "../Config.h"
+#include "../HttpManager.h"
 #include "settings-dialog.h"
 
 SettingsDialog::SettingsDialog(QWidget* parent) :
@@ -18,9 +19,9 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 {
 	ui->setupUi(this);
 
-    connect(ui->buttonBox, &QDialogButtonBox::clicked,
+	connect(ui->buttonBox, &QDialogButtonBox::clicked,
 		this, &SettingsDialog::DialogButtonClicked);
-    connect(ui->apiRefreshButton, &QPushButton::clicked,
+	connect(ui->apiRefreshButton, &QPushButton::clicked,
 		this, &SettingsDialog::RefreshStatus);
 }
 
@@ -28,8 +29,8 @@ void SettingsDialog::showEvent(QShowEvent* event) {
 	auto conf = GetConfig();
 
 	ui->apiKey->setText(conf->APIKey);
-    SettingsDialog::SetServerStatusIndicator();
-    SettingsDialog::RefreshStatus();
+	SettingsDialog::SetServerStatusIndicator();
+	SettingsDialog::RefreshStatus();
 }
 
 void SettingsDialog::ToggleShowHide() {
@@ -41,35 +42,35 @@ void SettingsDialog::ToggleShowHide() {
 
 void SettingsDialog::SaveSettings() {
 	auto conf = GetConfig();
+	conf->APIKey = ui->apiKey->text();
 
-    conf->APIKey = ui->apiKey->text();
-    QString apiAuth = "IRLTKAPI " + conf->APIKey;
-    getHttpPtr()->addRequestHeader("Authorization", apiAuth.toUtf8());
+	auto httpManager = GetHttpManager();
+	httpManager->SetApiKey(ui->apiKey->text());
 
 	conf->Save();
 #ifdef DEBUG_MODE
-    blog(LOG_INFO, "Saved settings!");
+	blog(LOG_INFO, "Settings saved!");
 #endif
 }
 
 void SettingsDialog::DialogButtonClicked(QAbstractButton *button) {
-    QDialogButtonBox::ButtonRole signalButton = ui->buttonBox->buttonRole(button);
-    if (signalButton == QDialogButtonBox::ApplyRole || signalButton == QDialogButtonBox::AcceptRole) {
-        QRegExpValidator keyValidator = QRegExpValidator(QRegExp("[A-Fa-f0-9]{64}"));
-        int pos = 0;
-        QString apiKeyText = ui->apiKey->text();
-        if (!(keyValidator.validate(apiKeyText, pos) == QValidator::Acceptable)) {
-            QMessageBox msgBox;
-            msgBox.setWindowTitle(obs_module_text("IRLTKHotSwitcher.Panel.ErrorTitle"));
-            msgBox.setText(obs_module_text("IRLTKHotSwitcher.Panel.InvalidAPIKey"));
-            msgBox.exec();
-            return;
-        }
-        SettingsDialog::SaveSettings();
-        if (signalButton == QDialogButtonBox::AcceptRole) {
-            QDialog::accept();
-        }
-    }
+	QDialogButtonBox::ButtonRole signalButton = ui->buttonBox->buttonRole(button);
+	if (signalButton == QDialogButtonBox::ApplyRole || signalButton == QDialogButtonBox::AcceptRole) {
+		QRegExpValidator keyValidator = QRegExpValidator(QRegExp("[A-Za-z0-9]{64}"));
+		int pos = 0;
+		QString apiKeyText = ui->apiKey->text();
+		if (!(keyValidator.validate(apiKeyText, pos) == QValidator::Acceptable)) {
+			QMessageBox msgBox;
+			msgBox.setWindowTitle(obs_module_text("IRLTKHotSwitcher.Panel.ErrorTitle"));
+			msgBox.setText(obs_module_text("IRLTKHotSwitcher.Panel.InvalidAPIKey"));
+			msgBox.exec();
+			return;
+		}
+		SettingsDialog::SaveSettings();
+		if (signalButton == QDialogButtonBox::AcceptRole) {
+			QDialog::accept();
+		}
+	}
 }
 
 SettingsDialog::~SettingsDialog() {
@@ -77,39 +78,25 @@ SettingsDialog::~SettingsDialog() {
 }
 
 void SettingsDialog::RefreshStatus() {
-    auto conf = GetConfig();
-    auto reply = getHttpPtr()->get(QString("https://api.irl.run/v1/server/status"));
-    connect(reply, &HttpReply::finished, this, [this](auto &reply) {
-        if (reply.isSuccessful()) {
-            obs_data_t *statusData = obs_data_create_from_json(reply.body().toStdString().c_str());
-            SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(statusData, "ready"));
-            obs_data_release(statusData);
-#ifdef DEBUG_MODE
-            blog(LOG_INFO, "HTTP Code: %d | Phrase: %s", reply.statusCode(), reply.reasonPhrase().toStdString().c_str());
-#endif
-        } else {
-            if (reply.statusCode() == 401) {
-                QMessageBox msgBox;
-                msgBox.setWindowTitle(obs_module_text("IRLTKHotSwitcher.Panel.ErrorTitle"));
-                msgBox.setText(obs_module_text("IRLTKHotSwitcher.Panel.401Error"));
-                msgBox.exec();
-            } else {
-                QMessageBox msgBox;
-                msgBox.setWindowTitle(obs_module_text("IRLTKHotSwitcher.Panel.ErrorTitle"));
-                msgBox.setText(QString(obs_module_text("IRLTKHotSwitcher.Panel.UnknownHTTPError")).arg(reply.statusCode()));
-                msgBox.exec();
-            }
-#ifdef DEBUG_MODE
-            blog(LOG_INFO, "API Error! Code: %d | Phrase: %s", reply.statusCode(), reply.reasonPhrase().toStdString().c_str());
-#endif
-        }
-    });
+	auto httpManager = GetHttpManager();
+	httpManager->GetIrltkServerStatus([this] (obs_data_t *reply) {
+		if (obs_data_get_bool(reply, "status")) {
+			SettingsDialog::SetServerStatusIndicator(obs_data_get_bool(reply, "serverStatus"));
+		} else {
+			QMessageBox msgBox;
+				msgBox.setWindowTitle(obs_module_text("IRLTKHotSwitcher.Panel.ErrorTitle"));
+				int statusCode = obs_data_get_int(reply, "statusCode");
+				QString comment = obs_data_get_string(reply, "comment");
+				msgBox.setText(QString(obs_module_text("IRLTKHotSwitcher.Panel.HTTPError")).arg(statusCode).arg(comment));
+				msgBox.exec();
+		}
+	});
 }
 
 void SettingsDialog::SetServerStatusIndicator(bool active) {
-    if (active) {
-        ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/checkmark"));
-    } else {
-        ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/times"));
-    }
+	if (active) {
+		ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/checkmark"));
+	} else {
+		ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/times"));
+	}
 }
