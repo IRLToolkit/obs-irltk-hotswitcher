@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>657</width>
-    <height>187</height>
+    <height>200</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -82,8 +82,25 @@
          <height>50</height>
         </size>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../../resources.qrc">:/logos/times</pixmap>
+       </property>
        <property name="scaledContents">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="forceStopLabel">
+       <property name="text">
+        <string>Force stop stream</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="forceStopStream">
+       <property name="text">
+        <string>Do it!</string>
        </property>
       </widget>
      </item>

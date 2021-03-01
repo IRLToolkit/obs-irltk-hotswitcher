@@ -15,6 +15,7 @@ public:
 	void ToggleShowHide();
 	void RefreshStatus();
 	void SetServerStatusIndicator(bool active=false);
+	void ForceStopStream();
 
 private Q_SLOTS:
 	void SaveSettings();

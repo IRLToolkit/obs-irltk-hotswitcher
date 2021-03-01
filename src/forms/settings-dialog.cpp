@@ -23,6 +23,8 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 		this, &SettingsDialog::DialogButtonClicked);
 	connect(ui->apiRefreshButton, &QPushButton::clicked,
 		this, &SettingsDialog::RefreshStatus);
+	connect(ui->forceStopStream, &QPushButton::clicked,
+		this, &SettingsDialog::ForceStopStream);
 }
 
 void SettingsDialog::showEvent(QShowEvent* event) {
@@ -99,4 +101,11 @@ void SettingsDialog::SetServerStatusIndicator(bool active) {
 	} else {
 		ui->serverStatusIndicator->setPixmap(QPixmap(":/logos/times"));
 	}
+}
+
+void SettingsDialog::ForceStopStream() {
+	blog(LOG_INFO, "Stopping stream");
+	obs_output_end_data_capture(obs_frontend_get_streaming_output());
+	//obs_output_force_stop(obs_frontend_get_streaming_output());
+	blog(LOG_INFO, "Stopped stream");
 }
